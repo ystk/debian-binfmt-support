@@ -5,16 +5,23 @@ version = $(shell dpkg-parsechangelog | \
 
 dtmp = $(CURDIR)/debian/binfmt-support
 
-%:
-	dh $@
+export V := 1
 
-override_dh_install:
-	sed 's/@VERSION@/$(version)/g' update-binfmts.pl \
-		> $(dtmp)/usr/sbin/update-binfmts
-	chmod 755 $(dtmp)/usr/sbin/update-binfmts
-	install -m755 run-detectors.pl \
-		$(dtmp)/usr/share/binfmt-support/run-detectors
-	dh_install
+%:
+	dh $@ --builddirectory=debian/build
+
+# --libexecdir is set here because debhelper defaults to using multiarch
+# paths at compat level 9, which is a reasonable choice in general but
+# unnecessary here.
+override_dh_auto_configure:
+	dh_auto_configure -- --libexecdir=\$${prefix}/lib
+
+# Slightly peculiar trick to allow installing the Upstart job only on some
+# distributions without having to change its name or play tricks with
+# symlinks.
+ifeq (yes,$(shell dpkg-vendor --derives-from Ubuntu && echo yes))
+  INITNAME := --name=binfmt-support
+endif
 
 override_dh_installinit:
-	dh_installinit --error-handler=true -- start 90 2 3 4 5 .
+	dh_installinit $(INITNAME) --error-handler=true -- start 90 2 3 4 5 .

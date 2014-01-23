@@ -1,0 +1,93 @@
+#! /bin/sh
+
+# Test update-binfmts --enable and --disable.
+
+: ${srcdir=.}
+. "$srcdir/testlib.sh"
+
+init
+fake_proc
+
+expect_pass 'magic: install' \
+	    'update_binfmts_proc --install test-magic /bin/sh --magic ABCD'
+cat >"$tmpdir/1-admin.exp" <<'EOF'
+:
+magic
+0
+ABCD
+
+/bin/sh
+
+
+EOF
+expect_pass 'magic: admindir entry OK' \
+	    'diff -u "$tmpdir/var/lib/binfmts/test-magic" "$tmpdir/1-admin.exp"'
+cat >"$tmpdir/1-proc.exp" <<'EOF'
+enabled
+interpreter /bin/sh
+flags: 
+offset 0
+magic 41424344
+EOF
+expect_pass 'magic: procdir entry OK' \
+	    'diff -u "$tmpdir/proc/test-magic" "$tmpdir/1-proc.exp"'
+
+expect_pass 'extension: install' \
+	    'update_binfmts_proc --install test-extension /bin/sh --extension ext'
+cat >"$tmpdir/2-admin.exp" <<'EOF'
+:
+extension
+0
+ext
+
+/bin/sh
+
+
+EOF
+expect_pass 'extension: admindir entry OK' \
+	    'diff -u "$tmpdir/var/lib/binfmts/test-extension" "$tmpdir/2-admin.exp"'
+cat >"$tmpdir/2-proc.exp" <<'EOF'
+enabled
+interpreter /bin/sh
+flags: 
+extension .ext
+EOF
+expect_pass 'extension: procdir entry OK' \
+	    'diff -u "$tmpdir/proc/test-extension" "$tmpdir/2-proc.exp"'
+
+expect_pass 'magic: disable' \
+	    'update_binfmts_proc --disable test-magic'
+expect_pass 'magic: procdir entry gone' \
+	    '! test -e "$tmpdir/proc/test-magic"'
+expect_pass 'extension: still enabled' \
+	    'diff -u "$tmpdir/proc/test-extension" "$tmpdir/2-proc.exp"'
+
+expect_pass 'extension: disable' \
+	    'update_binfmts_proc --disable test-extension'
+expect_pass 'extension: procdir entry gone' \
+	    '! test -e "$tmpdir/proc/test-extension"'
+
+expect_pass 'extension: enable' \
+	    'update_binfmts_proc --enable test-extension'
+expect_pass 'extension: procdir entry OK' \
+	    'diff -u "$tmpdir/proc/test-extension" "$tmpdir/2-proc.exp"'
+expect_pass 'magic: still disabled' \
+	    '! test -e "$tmpdir/proc/test-magic"'
+
+expect_pass 'enable all' \
+	    'update_binfmts_proc --enable'
+expect_pass 'magic: procdir entry OK' \
+	    'diff -u "$tmpdir/proc/test-magic" "$tmpdir/1-proc.exp"'
+expect_pass 'extension: procdir entry OK' \
+	    'diff -u "$tmpdir/proc/test-extension" "$tmpdir/2-proc.exp"'
+
+expect_pass 'disable all' \
+	    'update_binfmts_proc --disable'
+expect_pass 'magic: procdir entry gone' \
+	    '! test -e "$tmpdir/proc/test-magic"'
+expect_pass 'extension: procdir entry gone' \
+	    '! test -e "$tmpdir/proc/test-extension"'
+expect_pass 'procdir unmounted' \
+	    '! test -e "$tmpdir/proc/register"'
+
+finish

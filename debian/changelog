@@ -1,3 +1,133 @@
+binfmt-support (2.0.12) unstable; urgency=low
+
+  * Fix ineffective --find test.
+  * Don't show disabled formats in --find output (closes: #689247).
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 30 Sep 2012 22:25:11 +0100
+
+binfmt-support (2.0.11) unstable; urgency=low
+
+  * Backport Gnulib commit 66712c23388e93e5c518ebc8515140fa0c807348 to stop
+    assuming gets.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 18 Sep 2012 00:05:32 +0100
+
+binfmt-support (2.0.10) unstable; urgency=low
+
+  * If a binary format is already enabled according to the kernel, which can
+    happen in chroots if it was installed in the host system, then continue
+    as gracefully as we can manage rather than exiting non-zero (closes:
+    #680349).
+  * Upgrade to Automake 1.11.6.
+
+ -- Colin Watson <cjwatson@debian.org>  Mon, 30 Jul 2012 10:36:59 +0100
+
+binfmt-support (2.0.9) unstable; urgency=low
+
+  * Make src/tests/binfmt_misc.py compatible with Python 3.
+  * Build with V=1 so that tools such as blhc can scan more effectively for
+    missing build flags.
+  * Convert debian/copyright to copyright-format 1.0.
+  * Upgrade to Autoconf 2.69, Automake 1.11.5, and Gnulib 20120404-stable.
+    gnulib/lib/argp-parse.patch is no longer needed.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 26 Jun 2012 00:22:20 +0100
+
+binfmt-support (2.0.8) unstable; urgency=low
+
+  * Only print informational messages on non-Linux systems if stderr is a
+    terminal.  This allows saving a couple of processes from the Upstart
+    job.
+  * Convert to dpkg-buildflags, using debhelper v9.
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 20 Nov 2011 17:24:19 +0000
+
+binfmt-support (2.0.7) unstable; urgency=low
+
+  * Fix display tests to actually test the output of --display.
+  * Upgrade to Gnulib 20110908-stable.
+  * Display a useful error message rather than crashing if asked to display
+    a non-existent binary format (closes: #643756, LP: #792601).
+
+ -- Colin Watson <cjwatson@debian.org>  Thu, 29 Sep 2011 12:38:22 +0100
+
+binfmt-support (2.0.6) unstable; urgency=low
+
+  * Remove /var/lib/binfmts on purge (closes: #635449).
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 26 Jul 2011 09:41:55 +0100
+
+binfmt-support (2.0.5) unstable; urgency=low
+
+  * Update Vcs-Bzr field for Alioth changes.
+  * Add an Upstart job, installed only on Ubuntu-derived distributions.
+  * Upgrade to Autoconf 2.68 and Gnulib 20110609-stable.
+  * Remove temporary test directory when skipping a test.
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 10 Jul 2011 01:15:31 +0100
+
+binfmt-support (2.0.4) unstable; urgency=low
+
+  * Add a basic test for --find.
+  * Use 'fusermount -u' rather than umount when running tests.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 22 Mar 2011 10:39:11 +0000
+
+binfmt-support (2.0.3) unstable; urgency=low
+
+  * Mark binfmt-support Multi-Arch: foreign.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 22 Feb 2011 12:26:13 +0000
+
+binfmt-support (2.0.2) unstable; urgency=low
+
+  * Upload to unstable.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 08 Feb 2011 10:22:00 +0000
+
+binfmt-support (2.0.1) experimental; urgency=low
+
+  * Add a --find option to print the list of interpreters for an executable.
+    Requested by Loïc Minier.
+  * Fix crash if get_import returns NULL (LP: #686115).
+  * Fix hexadecimal expansion to ensure that we only ever parse exactly two
+    hex digits.
+  * Use mem* functions rather than str* on binary data when finding
+    interpreters.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 25 Jan 2011 14:30:52 +0000
+
+binfmt-support (2.0.0) experimental; urgency=low
+
+  * Rewrite in C (closes: #602920).
+  * Upgrade to GPLv3 or later, mostly due to Gnulib.
+  * Use a separate build directory.
+  * Add a test suite.  This does nothing useful during a default Debian
+    package build as it currently requires FUSE, but it can be run by hand.
+  * Add option parsing to run-detectors, mainly so that we can have an
+    --admindir option for use by the test suite but also to provide a useful
+    --help.
+  * Remove cache directory hack, no longer necessary now that we aren't
+    pulling in Perl at boot time.
+
+ -- Colin Watson <cjwatson@debian.org>  Mon, 22 Nov 2010 11:15:58 +0000
+
+binfmt-support (1.2.20) experimental; urgency=low
+
+  * Fix =~ operator typo in Binfmt::Format.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 16 Nov 2010 17:57:31 +0000
+
+binfmt-support (1.2.19) experimental; urgency=low
+
+  * Drop error/warning wrapping; it was cute in 2000, but I find it annoying
+    now.  Use the 'say' feature from Perl 5.10.
+  * Convert from 'perl -w' to 'use warnings'.
+  * Strip trailing whitespace from values in database and format files.
+  * Upgrade to debhelper 8.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 16 Nov 2010 16:16:09 +0000
+
 binfmt-support (1.2.18) unstable; urgency=low
 
   * Convert to source format 3.0 (native).
