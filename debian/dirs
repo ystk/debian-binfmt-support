@@ -1,6 +1,0 @@
-usr/sbin
-usr/share/binfmt-support
-usr/share/binfmts
-usr/share/perl5/Binfmt
-var/cache/binfmts
-var/lib/binfmts

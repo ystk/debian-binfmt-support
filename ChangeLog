@@ -1,0 +1,276 @@
+2014-03-30  Colin Watson  <cjwatson@debian.org>
+
+	Version: 2.1.4.
+
+	Upgrade to Automake 1:1.14.1-3 (from Debian).
+
+2014-03-30  Cameron Norman  <camerontnorman@gmail.com>
+
+	upstart: do not act as a task
+
+	* init/upstart/binfmt-support.conf.in: Make the job a service with
+	pre-start and post-stop stanzas rather than a task, as a task with a
+	corresponding init script prevents startpar from continuing the boot
+	sequence past that init script (because the job is considered
+	"stopped").
+	* NEWS: Document this.
+
+2014-03-06  Colin Watson  <cjwatson@debian.org>
+
+	Fix --disable-sysvinit and --disable-openrc configure options
+
+	* configure.ac: Check whether $enable_sysvinit and $enable_openrc
+	are set to "yes", not merely whether they are set at all.
+	* NEWS: Document this.
+
+2014-02-20  Colin Watson  <cjwatson@debian.org>
+
+	Fix test suite when libexecdir is not /usr/lib
+
+	* src/tests/Makefile.am (TESTS_ENVIRONMENT): Export pkglibexecdir to
+	tests.
+	* src/tests/detectors: Expect interpreter to be set to
+	$pkglibexecdir/run-detectors rather than
+	/usr/lib/binfmt-support/run-detectors.
+	* NEWS: Document this.
+
+2014-02-20  Colin Watson  <cjwatson@debian.org>
+
+	* .gitignore: Add src/tests/*.log and src/tests/*.trs.
+
+2014-02-20  Colin Watson  <cjwatson@debian.org>
+
+	Move Autotools auxiliary build files from tools to build-aux.
+
+	"build-aux" is a more conventional location for the Autotools files.
+
+2014-02-18  Colin Watson  <cjwatson@debian.org>
+
+	Upgrade to Gnulib 20140202.
+
+2014-02-08  Colin Watson  <cjwatson@debian.org>
+
+	Version: 2.1.3.
+
+	* init/openrc/binfmt-support.in: Check uname in stop as well.
+
+2014-02-08  Colin Watson  <cjwatson@debian.org>
+
+	Fix reversed logic in OpenRC script
+
+	* init/openrc/binfmt-support.in (start): Fix reversed uname check.
+	* NEWS: Document this.
+
+2014-02-07  Colin Watson  <cjwatson@debian.org>
+
+	Version: 2.1.2.
+
+2014-02-07  Colin Watson  <cjwatson@debian.org>
+
+	Add --enable-sysvinit and --enable-openrc configure options
+
+	* configure.ac: Add --enable-sysvinit and --enable-openrc options.
+	Check that at most one of these is used.
+	* init/openrc/Makefile.am: Install script if --enable-openrc is
+	used.
+	* init/sysvinit/Makefile.am: Install script if --enable-sysvinit is
+	used.
+	* NEWS: Document this.
+
+2014-02-07  Colin Watson  <cjwatson@debian.org>
+
+	Remove unnecessary file extension
+
+	* init/sysvinit/Makefile.am (EXTRA_DIST, CLEANFILES, noinst_SCRIPTS,
+	binfmt-support): Remove ".sh" extension.
+	* init/sysvinit/binfmt-support.sh.in: Rename to ...
+	* init/sysvinit/binfmt-support.in: ... this.
+	* .gitignore: Ignore init/sysvinit/binfmt-support rather than
+	init/sysvinit/binfmt-support.sh.
+
+2014-02-07  Colin Watson  <cjwatson@debian.org>
+
+	Add OpenRC support
+
+	* configure.ac (AC_CONFIG_FILES): Add init/openrc/Makefile.
+	* init/Makefile.am (SUBDIRS): Add openrc.
+	* init/openrc/Makefile.am: New file.
+	* init/openrc/binfmt-support.in: New file.
+	* .gitignore: Add init/openrc/Makefile and
+	init/openrc/binfmt-support.
+	* NEWS: Document this.
+
+2014-02-07  Colin Watson  <cjwatson@debian.org>
+
+	Embed full path to update-binfmts into init files
+
+	* init/sysvinit/binfmt-support.sh: Rename to ...
+	* init/sysvinit/binfmt-support.sh.in: ... this, substituting
+	@sbindir@ and removing PATH setting.
+	* init/sysvinit/Makefile.am (EXTRA_DIST): Distribute
+	binfmt-support.sh.in.
+	(CLEANFILES): Clean binfmt-support.sh.
+	(dist_noinst_SCRIPTS): Rename to ...
+	(noinst_SCRIPTS): ... this.
+	(binfmt-support.sh): Generate from binfmt-support.sh.in.
+	* init/upstart/binfmt-support.conf: Rename to ...
+	* init/upstart/binfmt-support.conf.in: ... this, substituting
+	@sbindir@.
+	* init/upstart/Makefile.am (EXTRA_DIST): Distribute
+	binfmt-support.conf.in.
+	(CLEANFILES): Clean binfmt-support.conf.
+	(dist_upstart_DATA): Rename to ...
+	(upstart_DATA): ... this.
+	(binfmt-support.conf): Generate from binfmt-support.conf.in.
+	* .gitignore: Add init/sysvinit/binfmt-support.sh and
+	init/upstart/binfmt-support.conf.
+	* NEWS: Document this.
+
+2014-02-07  Colin Watson  <cjwatson@debian.org>
+
+	Ensure all necessary directories exist after installation
+
+	* configure.ac: Add AC_PROG_MKDIR_P.
+	* src/Makefile.am (install-data-hook): Create $(admindir) and
+	$(importdir).
+	* NEWS: Document this.
+
+2014-02-07  Colin Watson  <cjwatson@debian.org>
+
+	Stop hardcoding Debian defaults for various directories
+
+	* configure.ac: Substitute admindir, importdir, and procdir.
+	* man/update-binfmts.8: Rename to ...
+	* man/update-binfmts.man8: ... this, without hardcoding directories.
+	* man/Makefile.am (dist_man8_MANS): Rename to ...
+	(man8_MANS): ... this.
+	(CLEANFILES): Clean $(man8_MANS).
+	(.man8.8): Generate manual page with appropriate substitutions.
+	(dist-hook): Distribute update-binfmts.man8.
+	* src/Makefile.am (AM_CPPFLAGS): Define ADMINDIR, IMPORTDIR,
+	PROCDIR, and AUXDIR.
+	* src/paths.c (admindir, importdir, procdir, auxdir): Use
+	definitions rather than hardcoding.
+	* src/run-detectors.c (options): Likewise.
+	* src/update-binfmts.c (options): Likewise.
+	* .gitignore: Add man/update-binfmts.8.
+	* NEWS: Document this.
+
+2014-02-06  Colin Watson  <cjwatson@debian.org>
+
+	Upgrade to Automake 1.14.1.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Version: 2.1.1.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Fix installation of systemd unit files.
+
+	* configure.ac (AC_CONFIG_FILES): Remove
+	init/systemd/binfmt-support.service.
+	* init/systemd/Makefile.am (EXTRA_DIST): Add
+	binfmt-support.service.in.
+	(CLEANFILES): Add binfmt-support.service.
+	(systemdsystemunit_DATA): Rename to ...
+	(nodist_systemdsystemunit_DATA): ... this.
+	(binfmt-support.service): Generate from binfmt-support.service.in.
+	* NEWS: Document this.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	* configure.ac: Fix --with-systemdsystemunitdir.
+
+	* .gitignore: Add **/*.a and **/*.o.
+
+	Version: 2.1.0.
+
+	* Makefile.am (gen_start_date): Fix fencepost error.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Add a systemd unit file.
+
+	* configure.ac: Add --with-systemdsystemunitdir option.
+	(AC_CONFIG_FILES): Add init/systemd/Makefile and
+	init/systemd/binfmt-support.service.
+	* Makefile.am (DISTCHECK_CONFIGURE_FLAGS): Ensure that
+	--with-systemdsystemunitdir points under ${prefix}.
+	* init/Makefile.am (SUBDIRS): Add systemd.
+	* init/systemd/Makefile.am: New file.
+	* init/systemd/binfmt-support.service.in: New file.
+	* NEWS: Document this.
+	* .gitignore: Update.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Add copyright/licence notices to init files.
+
+	* .gitignore: Remove Debian-specific files.
+
+	* NEWS: New file.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Add sample init configuration.
+
+	* Makefile.am (SUBDIRS): Add init.
+	* configure.ac (AC_CONFIG_FILES): Add init/Makefile,
+	init/sysvinit/Makefile, and init/upstart/Makefile.
+	* init/Makefile.am: New file.
+	* init/sysvinit/Makefile.am: New file.
+	* init/sysvinit/binfmt-support.sh: New file, stripped down from
+	debian/init.d in the Debian packaging.
+	* init/upstart/Makefile.am: New file.
+	* init/upstart/binfmt-support.conf: New file, copied from
+	debian/upstart in the Debian packaging.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	gnulib: Import gnupload module.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Improve accuracy of "make dist".
+
+	* Makefile.am (SUBDIRS): Add doc.
+	(EXTRA_DIST): Add gnulib/m4/math_h.m4.
+	* configure.ac (AC_CONFIG_FILES): Add doc/Makefile.
+	* doc/Makefile.am: New file.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Stop trying to distribute non-existent files.
+
+	* Makefile.am (EXTRA_DIST): Remove gnulib/gets.patch and
+	gnulib/lib/argp-parse.patch.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Automatically generate ChangeLog from git
+
+	* Makefile.am (dist-hook): Add gen-ChangeLog.
+	(gen-ChangeLog): New rule, based on that in coreutils.
+	* gnulib: Import gitlog-to-changelog module.
+	* .gitignore: Add **/*~.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Remove Debian packaging.
+
+	* debian/changelog: Copy to ...
+	* ChangeLog-2013: ... here.
+	* Makefile.am (EXTRA_DIST): Add ChangeLog-2013.
+	* configure.ac (AC_INIT): Stop autogenerating version from
+	debian/changelog.  Bump to 2.1.0.
+
+2013-12-29  Colin Watson  <cjwatson@debian.org>
+
+	Move to git.
+
+	* .bzrignore: Move to ...
+	* .gitignore: ... here, adjusting for differences between bzr and
+	git.
+	* Makefile.am (EXTRA_DIST): Replace .bzrignore with .gitignore.
+	* gnulib: Add --no-vc-files.
