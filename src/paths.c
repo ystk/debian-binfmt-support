@@ -24,7 +24,7 @@
 
 #include "paths.h"
 
-const char *admindir = "/var/lib/binfmts";
-const char *importdir = "/usr/share/binfmts";
-const char *procdir = "/proc/sys/fs/binfmt_misc";
-const char *auxdir = "/usr/lib/binfmt-support";
+const char *admindir = ADMINDIR;
+const char *importdir = IMPORTDIR;
+const char *procdir = PROCDIR;
+const char *auxdir = AUXDIR;

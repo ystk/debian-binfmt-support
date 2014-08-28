@@ -1,5 +1,23 @@
 #! /bin/sh
 
+# Copyright (C) 2010 Colin Watson.
+#
+# This file is part of binfmt-support.
+#
+# binfmt-support is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation; either version 3 of the License, or (at your
+# option) any later version.
+#
+# binfmt-support is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
+# Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with binfmt-support; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
 # Test userspace detectors.
 
 : ${srcdir=.}
@@ -46,7 +64,7 @@ expect_pass 'detector 1: admindir entry OK' \
 	    'diff -u "$tmpdir/var/lib/binfmts/test-1" "$tmpdir/1-admin.exp"'
 cat >"$tmpdir/1-proc.exp" <<EOF
 enabled
-interpreter /usr/lib/binfmt-support/run-detectors
+interpreter $pkglibexecdir/run-detectors
 flags: 
 extension .ext
 EOF
@@ -69,7 +87,7 @@ expect_pass 'detector 2: admindir entry OK' \
 	    'diff -u "$tmpdir/var/lib/binfmts/test-2" "$tmpdir/2-admin.exp"'
 cat >"$tmpdir/2-proc.exp" <<EOF
 enabled
-interpreter /usr/lib/binfmt-support/run-detectors
+interpreter $pkglibexecdir/run-detectors
 flags: 
 extension .ext
 EOF
@@ -92,7 +110,7 @@ expect_pass 'no detector: admindir entry OK' \
 	    'diff -u "$tmpdir/var/lib/binfmts/test-3" "$tmpdir/3-admin.exp"'
 cat >"$tmpdir/3-proc.exp" <<EOF
 enabled
-interpreter /usr/lib/binfmt-support/run-detectors
+interpreter $pkglibexecdir/run-detectors
 flags: 
 extension .ext
 EOF

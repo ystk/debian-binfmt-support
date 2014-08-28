@@ -13,6 +13,5 @@ set -e
 
 if type gnulib-tool >/dev/null 2>&1; then
 	gnulib-tool --update >/dev/null
-	patch -s -p1 <gnulib/gets.patch
 fi
 autoreconf -fi "$@"

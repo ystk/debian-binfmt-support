@@ -1,3 +1,84 @@
+binfmt-support (2.1.4-1) unstable; urgency=medium
+
+  * New upstream release.
+    - Make the Upstart job be a service, not a task (closes: #743018).
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 30 Mar 2014 22:05:53 +0100
+
+binfmt-support (2.1.3-2) unstable; urgency=medium
+
+  * Move debian/init.d to just debian/init, which dh_installinit supports
+    just as well.
+  * Remove dead code from debian/rules.
+  * Remove code related to non-dependency-based sysv-rc ordering, since that
+    is no longer supported (closes: #738505).
+
+ -- Colin Watson <cjwatson@debian.org>  Thu, 13 Feb 2014 13:01:12 +0000
+
+binfmt-support (2.1.3-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Policy version 3.9.5: no changes required.
+  * Refer to /usr/share/common-licenses/GPL-3 in debian/copyright rather
+    than plain GPL.
+  * Support parallel builds.
+
+ -- Colin Watson <cjwatson@debian.org>  Sat, 08 Feb 2014 23:39:46 +0000
+
+binfmt-support (2.1.2-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Set VERBOSE=1 when running tests so that Automake will print test logs
+    on failure.
+  * Move upstream signing key to debian/upstream/signing-key.asc (armoured).
+    Requires devscripts 2.14.0.
+  * Add a Homepage field.
+  * Remove now-unnecessary debian/dirs file.
+
+ -- Colin Watson <cjwatson@debian.org>  Fri, 07 Feb 2014 18:10:47 +0000
+
+binfmt-support (2.1.1-1) unstable; urgency=medium
+
+  * Convert to a non-native package.
+  * New upstream release.
+    - Add a systemd unit file (closes: #716812).
+  * Switch to git; adjust Vcs-* fields.
+  * Add a watch file.
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 29 Dec 2013 23:42:11 +0000
+
+binfmt-support (2.0.16) unstable; urgency=low
+
+  * Use dh-autoreconf to keep autotools output up to date, especially for
+    new ports.
+  * Upgrade to Automake 1.14 and Gnulib 20130805-stable.  gnulib/gets.patch
+    is no longer needed.
+
+ -- Colin Watson <cjwatson@debian.org>  Wed, 13 Nov 2013 16:04:25 +0000
+
+binfmt-support (2.0.15) unstable; urgency=low
+
+  * Build-depend on debhelper (>= 9~) directly rather than requiring a
+    Lintian override for use of 8.9.0.
+  * Upgrade to Automake 1.13.2 and autotools-dev 20130515.1.
+
+ -- Colin Watson <cjwatson@debian.org>  Fri, 07 Jun 2013 11:38:48 +0100
+
+binfmt-support (2.0.14) unstable; urgency=low
+
+  * Install Upstart job on Debian as well, following new recommendations in
+    https://wiki.ubuntu.com/UpstartCompatibleInitScripts.
+
+ -- Colin Watson <cjwatson@debian.org>  Wed, 22 May 2013 09:23:42 +0100
+
+binfmt-support (2.0.13) unstable; urgency=low
+
+  * Drop python build-dependency; fuse is hardly ever available in
+    autobuilding environments anyway, so it's ineffective.  The test suite
+    is still useful for manual testing.
+
+ -- Colin Watson <cjwatson@debian.org>  Fri, 07 Dec 2012 13:55:37 +0000
+
 binfmt-support (2.0.12) unstable; urgency=low
 
   * Fix ineffective --find test.

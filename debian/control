@@ -2,13 +2,15 @@ Source: binfmt-support
 Section: admin
 Priority: optional
 Maintainer: Colin Watson <cjwatson@debian.org>
-Standards-Version: 3.6.2
-Build-Depends: debhelper (>= 8.9.0~), pkg-config, libpipeline-dev, python (>= 2.6)
-Vcs-Bzr: http://anonscm.debian.org/bzr/binfmt-support/trunk
+Standards-Version: 3.9.5
+Build-Depends: debhelper (>= 9~), pkg-config, libpipeline-dev, dh-autoreconf, dh-systemd
+Homepage: http://binfmt-support.nongnu.org/
+Vcs-Git: git://anonscm.debian.org/binfmt-support/binfmt-support.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=binfmt-support/binfmt-support.git
 
 Package: binfmt-support
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base (>= 3.0-6)
+Depends: ${shlibs:Depends}, ${misc:Depends}, lsb-base (>= 4.1+Debian3)
 Multi-Arch: foreign
 Description: Support for extra binary formats
  The binfmt_misc kernel module, contained in versions 2.1.43 and later of the

@@ -18,14 +18,34 @@
 ## with binfmt-support; if not, write to the Free Software Foundation, Inc.,
 ## 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
-SUBDIRS = gnulib/lib src man
+SUBDIRS = gnulib/lib src doc man init
 
 EXTRA_DIST = \
-	.bzrignore \
+	.gitignore \
+	ChangeLog-2013 \
 	autogen.sh \
-	gnulib/gets.patch \
-	gnulib/lib/argp-parse.patch \
 	gnulib/m4/gnulib-cache.m4 \
 	gnulib/m4/gnulib-tool.m4
 
+# These macro files are imported by gnulib-tool, but at present not used.
+# We include them in the distribution anyway for maximum consistency.
+EXTRA_DIST += \
+	gnulib/m4/math_h.m4
+
 ACLOCAL_AMFLAGS = -I gnulib/m4
+
+dist-hook: gen-ChangeLog
+
+gen_start_date = 2013-12-28
+.PHONY: gen-ChangeLog
+gen-ChangeLog:
+	$(AM_V_GEN)if test -d .git; then \
+		$(top_srcdir)/build-aux/gitlog-to-changelog \
+			--format='%s%n%n%b%n' \
+			--since="$(gen_start_date)" > $(distdir)/cl-t; \
+		rm -f $(distdir)/ChangeLog; \
+		mv $(distdir)/cl-t $(distdir)/ChangeLog; \
+	fi
+
+DISTCHECK_CONFIGURE_FLAGS = \
+	--with-systemdsystemunitdir=\$${prefix}/$(systemdsystemunitdir)

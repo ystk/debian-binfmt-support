@@ -18,4 +18,19 @@
 ## with binfmt-support; if not, write to the Free Software Foundation, Inc.,
 ## 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
-dist_man8_MANS = update-binfmts.8
+man8_MANS = update-binfmts.8
+CLEANFILES = $(man8_MANS)
+
+.man8.8:
+	sed -e 's,%admindir%,$(admindir),g; s,%importdir%,$(importdir),g' \
+		$< > $@
+
+dist-hook:
+	set -e; \
+	dist_files=`for file in $(man8_MANS); do \
+			echo $$file | sed 's/\.\([0-9]\)/\.man\1/'; \
+		    done`; \
+	for file in $$dist_files; do \
+		test -f $(distdir)/$$file \
+		|| cp -p $(srcdir)/$$file $(distdir)/$$file; \
+	done

@@ -45,10 +45,10 @@ enum opts {
 
 static struct argp_option options[] = {
     { "admindir",	OPT_ADMINDIR,	"DIRECTORY",	0,
-	"administration directory (default: /var/lib/binfmts)" },
+	"administration directory (default: " ADMINDIR ")" },
     { "procdir",	OPT_PROCDIR,	"DIRECTORY",	OPTION_HIDDEN,
 	"proc directory, for test suite use only "
-	"(default: /proc/sys/fs/binfmt_misc)", 5 },
+	"(default: " PROCDIR ")", 5 },
     { 0 }
 };
 

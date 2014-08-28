@@ -20,9 +20,9 @@ dnl Process this file with autoconf to produce a configure script.
 # USA.
 
 # Initialise and check we're in the correct directory.
-AC_INIT([binfmt-support], [2.0.8], [cjwatson@debian.org])
-AC_CONFIG_AUX_DIR([tools])
-AM_INIT_AUTOMAKE([1.10 -Wall -Werror foreign])
+AC_INIT([binfmt-support], [2.1.4], [cjwatson@debian.org])
+AC_CONFIG_AUX_DIR([build-aux])
+AM_INIT_AUTOMAKE([1.11 -Wall -Werror foreign parallel-tests])
 AM_MAINTAINER_MODE
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AC_PREREQ([2.59])
@@ -48,6 +48,7 @@ then
 	gl_WARN_ADD([-Wredundant-decls])
 	gl_WARN_ADD([-Wno-missing-field-initializers])
 fi
+AC_PROG_MKDIR_P
 
 # Check for various header files and associated libraries.
 AC_ISC_POSIX
@@ -59,11 +60,39 @@ AC_TYPE_SIZE_T
 
 PKG_CHECK_MODULES([libpipeline], [libpipeline])
 
+AC_ARG_ENABLE([sysvinit],
+	      AS_HELP_STRING([--enable-sysvinit], [Install sysvinit script]))
+AM_CONDITIONAL([INSTALL_SYSVINIT], [test "x$enable_sysvinit" = xyes])
+
+AC_ARG_ENABLE([openrc],
+	      AS_HELP_STRING([--enable-openrc], [Install OpenRC script]))
+AM_CONDITIONAL([INSTALL_OPENRC], [test "x$enable_openrc" = xyes])
+
+if test "x$enable_sysvinit" = xyes && test "x$enable_openrc" = xyes; then
+	AC_MSG_ERROR([--enable-sysvinit and --enable-openrc are mutually exclusive])
+fi
+
+AC_ARG_WITH([systemdsystemunitdir],
+	    AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files]),
+	    [], [with_systemdsystemunitdir="$($PKG_CONFIG --variable=systemdsystemunitdir systemd)"])
+AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
+AM_CONDITIONAL([HAVE_SYSTEMD], [test "x$with_systemdsystemunitdir" != x])
+
 # If we're cross-compiling, tests won't work.
 AM_CONDITIONAL([CROSS_COMPILING], [test "x$cross_compiling" = xyes])
 
+AC_SUBST([admindir], ['$(localstatedir)/lib/binfmts'])
+AC_SUBST([importdir], ['$(datadir)/binfmts'])
+AC_SUBST([procdir], ['/proc/sys/fs/binfmt_misc'])
+
 AC_CONFIG_FILES([Makefile
 	gnulib/lib/Makefile
+	doc/Makefile
+	init/Makefile
+	init/openrc/Makefile
+	init/systemd/Makefile
+	init/sysvinit/Makefile
+	init/upstart/Makefile
 	man/Makefile
 	src/Makefile
 	src/tests/Makefile])

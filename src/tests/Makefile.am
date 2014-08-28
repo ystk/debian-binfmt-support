@@ -18,7 +18,11 @@
 ## with binfmt-support; if not, write to the Free Software Foundation, Inc.,
 ## 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 
-TESTS_ENVIRONMENT = PATH=..:$$PATH top_builddir=$(top_builddir) $(SHELL)
+TESTS_ENVIRONMENT = PATH=..:$$PATH; export PATH; \
+		    top_builddir=$(top_builddir); export top_builddir; \
+		    pkglibexecdir=$(pkglibexecdir); export pkglibexecdir;
+# Each test must use the configure-detected shell, not necessarily /bin/sh.
+AM_LOG_FLAGS = $(SHELL)
 
 ALL_TESTS = \
 	install \

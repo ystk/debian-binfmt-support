@@ -866,12 +866,12 @@ static struct argp_option options[] = {
     { "package",	OPT_PACKAGE,	"PACKAGE-NAME",	0,
 	"for --install and --remove, specify the current package name", 1 },
     { "admindir",	OPT_ADMINDIR,	"DIRECTORY",	0,
-	"administration directory (default: /var/lib/binfmts)", 2 },
+	"administration directory (default: " ADMINDIR ")", 2 },
     { "importdir",	OPT_IMPORTDIR,	"DIRECTORY",	0,
-	"import directory (default: /usr/share/binfmts)", 3 },
+	"import directory (default: " IMPORTDIR ")", 3 },
     { "procdir",	OPT_PROCDIR,	"DIRECTORY",	OPTION_HIDDEN,
 	"proc directory, for test suite use only "
-	"(default: /proc/sys/fs/binfmt_misc)", 5 },
+	"(default: " PROCDIR ")", 5 },
     { "test",		OPT_TEST,	0,		0,
 	"don't do anything, just demonstrate", 6 },
     { 0 }
