@@ -59,6 +59,7 @@ ext
 $tmpdir/program-1
 $tmpdir/detector-1
 
+
 EOF
 expect_pass 'detector 1: admindir entry OK' \
 	    'diff -u "$tmpdir/var/lib/binfmts/test-1" "$tmpdir/1-admin.exp"'
@@ -82,6 +83,7 @@ ext
 $tmpdir/program-2
 $tmpdir/detector-2
 
+
 EOF
 expect_pass 'detector 2: admindir entry OK' \
 	    'diff -u "$tmpdir/var/lib/binfmts/test-2" "$tmpdir/2-admin.exp"'
@@ -103,6 +105,7 @@ extension
 ext
 
 $tmpdir/program-3
+
 
 
 EOF

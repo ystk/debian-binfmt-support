@@ -42,6 +42,7 @@ ABCD
 /bin/sh
 
 
+
 EOF
 expect_pass 'magic: admindir entry OK' \
 	    'diff -u "$tmpdir/var/lib/binfmts/test-magic" "$tmpdir/1-admin.exp"'
@@ -70,6 +71,7 @@ magic
 ABCD
 \x7f\x7f\x7f\x7f
 /bin/sh
+
 
 
 EOF
