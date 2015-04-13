@@ -76,6 +76,7 @@ struct binfmt *binfmt_load (const char *name, const char *filename, int quiet)
     READ_LINE (interpreter, 0);
     READ_LINE (detector, 1);
     READ_LINE (credentials, 1);
+    READ_LINE (preserve, 1);
 
 #undef READ_LINE
 
@@ -106,6 +107,7 @@ struct binfmt *binfmt_new (const char *name, Hash_table *args)
     SET_FIELD (interpreter);
     SET_FIELD (detector);
     SET_FIELD (credentials);
+    SET_FIELD (preserve);
 
 #undef SET_FIELD
 
@@ -179,6 +181,7 @@ int binfmt_write (const struct binfmt *binfmt, const char *filename)
     WRITE_FIELD (interpreter);
     WRITE_FIELD (detector);
     WRITE_FIELD (credentials);
+    WRITE_FIELD (preserve);
 
 #undef WRITE_FIELD
 
@@ -203,6 +206,7 @@ void binfmt_print (const struct binfmt *binfmt)
     PRINT_FIELD (interpreter);
     PRINT_FIELD (detector);
     PRINT_FIELD (credentials);
+    PRINT_FIELD (preserve);
 
 #undef PRINT_FIELD
 }
@@ -226,6 +230,7 @@ void binfmt_free (struct binfmt *binfmt)
     free (binfmt->interpreter);
     free (binfmt->detector);
     free (binfmt->credentials);
+    free (binfmt->preserve);
     free (binfmt);
 }
 

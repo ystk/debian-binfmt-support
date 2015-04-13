@@ -1,3 +1,28 @@
+2014-08-24  Colin Watson  <cjwatson@debian.org>
+
+	Upgrade to Gettext 0.19.2.
+
+2014-08-19  Colin Watson  <cjwatson@debian.org>
+
+	Update to config.guess 2014-03-23 and config.sub 2014-05-01.
+
+2014-08-19  Riku Voipio  <riku.voipio@linaro.org>
+
+	Add support for preserve-argv0 flag
+
+	Qemu will start requiring setting P in binfmt_misc
+	flags [P]. Unfortunately update-binfmts doesn't just
+	pass flags section as-is. The only supported flag
+	so far is credentials, which is supported via --credentials
+	command line flag.
+
+	I've implemented a similar --preserve flag in this commit.
+
+	This commit (or something similar) needs to land to Debian
+	before qemu 2.2 can be uploaded.
+
+	[P] https://www.kernel.org/doc/Documentation/binfmt_misc.txt
+
 2014-03-30  Colin Watson  <cjwatson@debian.org>
 
 	Version: 2.1.4.

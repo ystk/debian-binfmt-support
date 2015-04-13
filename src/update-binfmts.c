@@ -361,7 +361,8 @@ static int act_enable (const char *name)
 	char type;
 	int need_detector;
 	const char *interpreter;
-	const char *flags;
+	const char *credentials;
+	const char *preserve;
 	char *regstring;
 
 	procdir_name = xasprintf ("%s/%s", procdir, name);
@@ -411,11 +412,15 @@ static int act_enable (const char *name)
 	/* Fake the interpreter if we need a userspace detector program. */
 	interpreter = need_detector ? run_detectors : binfmt->interpreter;
 
-	flags = (binfmt->credentials && !strcmp (binfmt->credentials, "yes"))
+	credentials =
+		(binfmt->credentials && !strcmp (binfmt->credentials, "yes"))
 		? "C" : "";
-	regstring = xasprintf (":%s:%c:%s:%s:%s:%s:%s\n",
+	preserve = (binfmt->preserve && !strcmp (binfmt->preserve, "yes"))
+		? "P" : "";
+	regstring = xasprintf (":%s:%c:%s:%s:%s:%s:%s%s\n",
 			       name, type, binfmt->offset, binfmt->magic,
-			       binfmt->mask, interpreter, flags);
+			       binfmt->mask, interpreter,
+			       credentials, preserve);
 	if (test)
 	    printf ("enable %s with the following format string:\n %s",
 		    name, regstring);
@@ -823,6 +828,7 @@ enum opts {
     OPT_EXTENSION,
     OPT_DETECTOR,
     OPT_CREDENTIALS,
+    OPT_PRESERVE,
     OPT_PACKAGE,
     OPT_ADMINDIR,
     OPT_IMPORTDIR,
@@ -863,6 +869,8 @@ static struct argp_option options[] = {
 	"use this userspace detector program" },
     { "credentials",	OPT_CREDENTIALS, "YES/NO",	OPTION_HIDDEN,
 	"use credentials of original binary for interpreter (yes/no)" },
+    { "preserve",	OPT_PRESERVE, "YES/NO",	OPTION_HIDDEN,
+	"preserve argv[0] of original binary for interpreter (yes/no)" },
     { "package",	OPT_PACKAGE,	"PACKAGE-NAME",	0,
 	"for --install and --remove, specify the current package name", 1 },
     { "admindir",	OPT_ADMINDIR,	"DIRECTORY",	0,
@@ -888,6 +896,7 @@ static struct {
     const char *interpreter;
     const char *detector;
     const char *credentials;
+    const char *preserve;
 } spec;
 
 static const char *mode_name (enum opts m)
@@ -1012,6 +1021,10 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state)
 	    spec.credentials = arg;
 	    return 0;
 
+	case OPT_PRESERVE:
+	    spec.preserve = arg;
+	    return 0;
+
 	case OPT_PACKAGE:
 	    if (package)
 		argp_error (state, "more than one --package option given");
@@ -1123,6 +1136,7 @@ int main (int argc, char **argv)
 	ADD_SPEC (interpreter);
 	ADD_SPEC (detector);
 	ADD_SPEC (credentials);
+	ADD_SPEC (preserve);
 #undef ADD_SPEC
 	binfmt = binfmt_new (name, format_args);
 

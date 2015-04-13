@@ -31,6 +31,7 @@ struct binfmt {
     char *interpreter;
     char *detector;
     char *credentials;
+    char *preserve;
 };
 
 struct binfmt *binfmt_load (const char *name, const char *filename, int quiet);

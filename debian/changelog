@@ -1,3 +1,12 @@
+binfmt-support (2.1.5-1) unstable; urgency=medium
+
+  * New upstream release.
+    - Add an "update-binfmts --preserve yes" option, mapping to the 'P' flag
+      in Linux binfmt_misc's flags field (thanks, Riku Voipio; closes:
+      #758200).
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 24 Aug 2014 19:17:03 +0100
+
 binfmt-support (2.1.4-1) unstable; urgency=medium
 
   * New upstream release.

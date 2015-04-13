@@ -232,6 +232,11 @@ and non-zero otherwise.
 .It Fl Fl credentials Cm yes , Fl Fl credentials Cm no
 Whether to keep the credentials of the original binary to run the interpreter;
 this is typically useful to run setuid binaries, but has security implications.
+.It Fl Fl preserve Cm yes , Fl Fl preserve Cm no
+Whether to preserve the original
+.Li argv[0]
+when running the interpreter, rather than overwriting it with the full path
+to the binary.
 .El
 .Ss FORMAT FILES
 A format file is a sequence of options, one per line, corresponding roughly
@@ -253,8 +258,9 @@ The
 .Ar mask ,
 .Ar extension ,
 .Ar detector ,
+.Ar credentials ,
 and
-.Ar credentials
+.Ar preserve
 options correspond to the command-line options of the same names.
 .Sh EXIT STATUS
 .Bl -tag -width 4n
